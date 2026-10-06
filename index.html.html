@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GER Backup — Return your Discord server to zero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#120d26;--bg2:#1b1338;--line:#3a2a6b;--text:#f4efe6;--muted:#b9afd6;--gold:#f2c230;--violet:#7a3fe0;--pink:#e0307f;--ink:#120d26;
+}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f4efe6;--bg2:#ebe3d3;--line:#cbbd9f;--text:#1c1436;--muted:#5b5078;--gold:#b8860b;--violet:#5b2a9e;--pink:#b81f66;--ink:#f4efe6}}
+:root[data-theme="light"]{--bg:#f4efe6;--bg2:#ebe3d3;--line:#cbbd9f;--text:#1c1436;--muted:#5b5078;--gold:#b8860b;--violet:#5b2a9e;--pink:#b81f66;--ink:#f4efe6}
+*,*:before,*:after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:400 17px/1.65 "Zen Kaku Gothic New",system-ui,sans-serif}
+h1,h2,h3{font-family:"Dela Gothic One",Impact,sans-serif;font-weight:400;line-height:1.05;margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0}
+.logo{font-family:"Dela Gothic One",sans-serif;font-size:18px;text-decoration:none;letter-spacing:.02em}
+.logo b{color:var(--gold);font-weight:400}
+nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0;font-size:15px}
+nav a{text-decoration:none;color:var(--muted)}nav a:hover{color:var(--text)}
+.btn{display:inline-block;padding:14px 26px;font:700 16px "Zen Kaku Gothic New",sans-serif;text-decoration:none;border:2px solid var(--gold);background:var(--gold);color:#120d26;cursor:pointer;transform:skewX(-8deg);transition:transform .15s,background .15s}
+.btn span{display:inline-block;transform:skewX(8deg)}
+.btn:hover{transform:skewX(-8deg) translateY(-2px)}
+.btn.ghost{background:transparent;color:var(--text);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--gold)}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:radial-gradient(circle at 78% 45%,rgba(122,63,224,.35),transparent 55%),var(--bg);transition:filter .5s}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;padding-top:36px;padding-bottom:84px}
+.menace{position:absolute;font-family:"Dela Gothic One",sans-serif;color:var(--violet);opacity:.28;font-size:54px;pointer-events:none;user-select:none}
+.m1{left:2%;top:34%;transform:rotate(-8deg)}.m2{right:3%;bottom:8%;transform:rotate(7deg)}
+h1{font-size:clamp(40px,6.4vw,78px);letter-spacing:-.01em}
+h1 em{font-style:normal;color:var(--gold)}
+.lead{max-width:50ch;color:var(--muted);margin:22px 0 32px;font-size:19px}
+.cta{display:flex;gap:16px;flex-wrap:wrap}
+.clockbox{text-align:center}
+.clock{width:100%;max-width:360px;filter:drop-shadow(0 0 30px rgba(242,194,48,.25))}
+.ring{fill:var(--bg2);stroke:var(--gold);stroke-width:5}
+.tick{stroke:var(--text);stroke-width:3}
+.hand{stroke-linecap:round;transform-origin:150px 150px}
+#sec{transition:none}
+.stop{margin-top:22px;font:700 15px "Zen Kaku Gothic New",sans-serif;background:none;color:var(--gold);border:2px solid var(--gold);padding:10px 20px;cursor:pointer}
+.stop:hover{background:var(--gold);color:#120d26}
+.readout{margin:14px 0 0;min-height:3.4em;font-size:15px;color:var(--muted)}
+.readout b{color:var(--text)}
+body.frozen .hero{filter:grayscale(1) contrast(1.15)}
+body.frozen #sec{opacity:.9}
+.flash{position:fixed;inset:0;background:var(--gold);opacity:0;pointer-events:none;z-index:9}
+.flash.go{animation:fl .55s ease-out}
+@keyframes fl{0%{opacity:.8}100%{opacity:0}}
+
+/* sections */
+section{padding:84px 0;border-top:1px solid var(--line)}
+h2{font-size:clamp(30px,4.2vw,48px);max-width:18ch}
+.sub{color:var(--muted);max-width:56ch;margin:16px 0 44px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:2px solid var(--line)}
+.cell{padding:28px;border-right:2px solid var(--line);border-bottom:2px solid var(--line);margin:0 -2px -2px 0}
+.cell h3{font-size:20px;margin-bottom:10px;color:var(--gold)}
+.cell p{margin:0;color:var(--muted);font-size:16px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.code{background:#0a0719;color:#f4efe6;border:2px solid var(--line);border-left:6px solid var(--gold);padding:22px;font:500 14.5px/1.9 ui-monospace,Menlo,Consolas,monospace;overflow-x:auto;white-space:pre}
+.code i{font-style:normal;color:#f2c230}.code u{text-decoration:none;color:#8f84b5}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{counter-increment:s;padding:0 0 28px 62px;position:relative}
+.steps li:before{content:counter(s);position:absolute;left:0;top:0;width:42px;height:42px;display:grid;place-items:center;background:var(--violet);color:#fff;font-family:"Dela Gothic One",sans-serif;transform:skewX(-8deg)}
+.steps h3{font-size:19px;margin-bottom:6px}
+.steps p{margin:0;color:var(--muted);font-size:16px}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:16px}
+th,td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--line)}
+th{font-family:"Dela Gothic One",sans-serif;font-weight:400;color:var(--gold)}
+td:first-child{font-weight:700}
+.final{text-align:center;background:linear-gradient(135deg,var(--violet),#3b1a82);color:#f4efe6}
+.final h2{margin:0 auto 18px;max-width:16ch}
+.final p{margin:0 auto 32px;max-width:48ch;opacity:.85}
+footer{padding:32px 0;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+@media(max-width:860px){
+  .hero .wrap,.split{grid-template-columns:1fr}
+  .grid{grid-template-columns:1fr}
+  nav ul{display:none}
+  .menace{font-size:34px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.flash.go{animation:none}.btn{transition:none}}
+</style>
+</head>
+<body>
+<div class="flash" id="flash"></div>
+<header class="hero">
+  <div class="menace m1" aria-hidden="true">ゴゴゴ</div>
+  <div class="menace m2" aria-hidden="true">ゴゴゴ</div>
+  <div class="wrap">
+    <nav style="grid-column:1/-1">
+      <a class="logo" href="#top">GER <b>BACKUP</b></a>
+      <ul><li><a href="#features">What it saves</a></li><li><a href="#commands">Commands</a></li><li><a href="#restore">Restore</a></li><li><a href="#faq">FAQ</a></li></ul>
+      <a class="btn" href="#" style="padding:10px 18px;font-size:14px"><span>Add to Discord</span></a>
+    </nav>
+    <div id="top">
+      <h1>Lose nothing.<br>Return to <em>zero.</em></h1>
+      <p class="lead">GER is a Discord bot named after Gold Experience Requiem. It saves your server as it is right now: roles, channels, permissions, messages and settings. If a raid or a mistake wrecks it, bring it back in minutes.</p>
+      <div class="cta">
+        <a class="btn" href="#"><span>Add to Discord</span></a>
+        <a class="btn ghost" href="#commands"><span>See commands</span></a>
+      </div>
+    </div>
+    <div class="clockbox">
+      <svg class="clock" viewBox="0 0 300 300" role="img" aria-label="Clock face with a moving second hand">
+        <circle class="ring" cx="150" cy="150" r="138"/>
+        <g id="ticks"></g>
+        <line class="hand" x1="150" y1="150" x2="150" y2="86" stroke="var(--text)" stroke-width="7" id="min"/>
+        <line class="hand" x1="150" y1="150" x2="150" y2="56" stroke="var(--pink)" stroke-width="3" id="sec"/>
+        <circle cx="150" cy="150" r="9" fill="var(--gold)"/>
+      </svg>
+      <button class="stop" id="stop" type="button" >Return to zero</button>
+      <p class="readout" id="readout" aria-live="polite">Last backup finished <b id="ago">0s</b> ago.</p>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="features"><div class="wrap">
+  <h2>One snapshot. The whole server.</h2>
+  <p class="sub">Each backup is a complete copy of how your server is built and what has been said in it.</p>
+  <div class="grid">
+    <div class="cell"><h3>Roles</h3><p>Names, colours, icons, hierarchy order and every permission flag.</p></div>
+    <div class="cell"><h3>Channels</h3><p>Text, voice, forum and announcement channels with categories, topics and slowmode.</p></div>
+    <div class="cell"><h3>Permissions</h3><p>Per-channel and per-category overwrites for every role and member.</p></div>
+    <div class="cell"><h3>Messages</h3><p>Content, authors, attachments, embeds, replies and pinned messages, up to the limit you set.</p></div>
+    <div class="cell"><h3>Emojis and stickers</h3><p>Custom emojis and stickers, re-uploaded with the same names.</p></div>
+    <div class="cell"><h3>Server settings</h3><p>Name, icon, banner, verification level, system channels, bans and webhooks.</p></div>
+  </div>
+</div></section>
+
+<section id="commands"><div class="wrap split">
+  <div>
+    <h2>Four commands run it all.</h2>
+    <p class="sub">Only members with Administrator can use them. Every action is written to your log channel.</p>
+    <div class="tablewrap"><table>
+      <tr><th>Command</th><th>What it does</th></tr>
+      <tr><td>/backup create</td><td>Saves the server now</td></tr>
+      <tr><td>/backup list</td><td>Shows saved backups</td></tr>
+      <tr><td>/backup restore</td><td>Rebuilds from a backup</td></tr>
+      <tr><td>/backup schedule</td><td>Sets automatic backups</td></tr>
+    </table></div>
+  </div>
+  <div class="code" role="img" aria-label="Example command output"><u># Save the server</u>
+<i>/backup create</i> messages:<i>5000</i> name:<i>before-event</i>
+
+ Roles          142 saved
+ Channels        38 saved
+ Messages    48,210 saved
+ Emojis          61 saved
+
+ Backup ID: <i>ZW-7F3A-91C2</i>
+
+<u># Run one every day</u>
+<i>/backup schedule</i> every:<i>24h</i> keep:<i>14</i></div>
+</div></section>
+
+<section id="restore"><div class="wrap split">
+  <div>
+    <h2>Return to any saved moment.</h2>
+    <p class="sub">Restoring works on the same server or on a brand-new one, so a deleted server is not the end.</p>
+  </div>
+  <ol class="steps">
+    <li><h3>Pick a backup</h3><p>Run <b>/backup list</b> and copy the ID of the moment you want back.</p></li>
+    <li><h3>Choose what returns</h3><p>Restore everything, or only roles, channels or messages.</p></li>
+    <li><h3>Confirm</h3><p>The bot shows exactly what will change. Nothing happens until you approve it.</p></li>
+  </ol>
+</div></section>
+
+<section id="faq"><div class="wrap">
+  <h2>Questions</h2>
+  <div class="grid" style="margin-top:40px">
+    <div class="cell"><h3>Where are backups stored?</h3><p>Encrypted at rest, under your server ID. Only your administrators can list or restore them.</p></div>
+    <div class="cell"><h3>Does the bot need Administrator?</h3><p>It needs permission to manage roles and channels to restore them. Backing up only needs read access.</p></div>
+    <div class="cell"><h3>Can I delete my data?</h3><p>Yes. Run <b>/backup delete</b> for one backup, or remove the bot to erase all of them.</p></div>
+  </div>
+</div></section>
+
+<section class="final"><div class="wrap">
+  <h2>Your server deserves a second life.</h2>
+  <p>Add the bot, run one command, and your server has a restore point.</p>
+  <a class="btn" href="#"><span>Add to Discord</span></a>
+</div></section>
+</main>
+
+<footer><div class="wrap"><span>GER Backup is an unofficial fan-themed project, not affiliated with Hirohiko Araki or Shueisha.</span><span>Terms · Privacy · Support</span></div></footer>
+
+<script>
+(function(){
+  var t=document.getElementById('ticks'),s='';
+  for(var i=0;i<12;i++){var a=i*30*Math.PI/180,r1=i%3?120:112,x1=150+Math.sin(a)*r1,y1=150-Math.cos(a)*r1,x2=150+Math.sin(a)*128,y2=150-Math.cos(a)*128;
+    s+='<line class="tick" x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'"/>';}
+  t.innerHTML=s;
+  var sec=document.getElementById('sec'),min=document.getElementById('min'),ago=document.getElementById('ago'),
+      btn=document.getElementById('stop'),out=document.getElementById('readout'),flash=document.getElementById('flash');
+  var frozen=false,elapsed=0,last=performance.now();
+  function fmt(n){var m=Math.floor(n/60),r=n%60;return m?m+'m '+r+'s':r+'s';}
+  function tick(now){
+    if(!frozen){elapsed+=(now-last)/1000;
+      sec.style.transform='rotate('+(elapsed*6%360)+'deg)';
+      min.style.transform='rotate('+(elapsed*0.1%360)+'deg)';
+      ago.textContent=fmt(Math.floor(elapsed));}
+    last=now;requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+  btn.addEventListener('click',function(){
+    var start=elapsed;elapsed=0;
+    flash.classList.remove('go');void flash.offsetWidth;flash.classList.add('go');
+    out.innerHTML='<b>Returned to zero.</b> Restored 142 roles, 38 channels and 48,210 messages.';
+    setTimeout(function(){out.innerHTML='Last backup finished <b id="ago">0s</b> ago.';ago=document.getElementById('ago');},4000);
+  });
+  })();
+</script>
+</body>
+</html>
